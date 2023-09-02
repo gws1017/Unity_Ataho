@@ -50,7 +50,7 @@ public class TalkManager : MonoBehaviour
             else if(Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space)) 
             {
                 keyInput = false;
-
+                AudioManager.instance.PlaySFX("ok");
                 ExcuteChoise();
             }
 
@@ -105,11 +105,16 @@ public class TalkManager : MonoBehaviour
         return portraitData[id];
     }
 
-    public void SelectTalk(int Length)
+    public void SelectTalk(int id, int Length)
     {
         keyInput = true;
         selectImage.gameObject.SetActive(true);
         selectLength = Length;
+        if(id == 110)
+        {
+            gameManager.scanObject.GetComponent<SaveObject>().Recovery();
+        }
+
     }
 
 }

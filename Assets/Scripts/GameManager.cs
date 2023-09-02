@@ -18,9 +18,15 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     int talkIndex;
 
+    string mapName = "village";
+
     public GameObject scanObject;
     public bool isAction;
 
+    private void Start()
+    {
+        AudioManager.instance.PlayBGM(mapName);
+    }
 
     public void Action(GameObject scanObj)
     {
@@ -30,7 +36,6 @@ public class GameManager : MonoBehaviour
 
         talkPannel.SetActive(isAction);
     }
-
     void Talk(int id,bool isNPC)
     {
         string talkData = talkManager.GetTalk(id, talkIndex);
@@ -55,7 +60,7 @@ public class GameManager : MonoBehaviour
             {
                 if(portraitIndex <= 100)
                 {
-                    talkManager.SelectTalk(portraitIndex);
+                    talkManager.SelectTalk(id,portraitIndex);
                 }
                 portaitImage.color = new Color(1, 1, 1, 0);
 

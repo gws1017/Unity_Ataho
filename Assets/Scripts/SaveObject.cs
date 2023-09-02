@@ -14,4 +14,9 @@ public class SaveObject : MonoBehaviour
 
         Debug.Log(PlayerPrefs.GetFloat("PlayerX") + "(save succ)" );
     }
+
+    public void Recovery()
+    {
+        AudioManager.instance.PlaySFX("recovery");
+    }
 }
