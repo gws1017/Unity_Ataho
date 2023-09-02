@@ -22,7 +22,6 @@ public class FollowCamera : MonoBehaviour
 
     Vector3 targetPos;
 
-
     private void Start()
     {
         followCam = GetComponent<Camera>();
@@ -31,7 +30,7 @@ public class FollowCamera : MonoBehaviour
         maxBound = bound.bounds.max;
 
         halfHeight = followCam.orthographicSize;
-        halfWidth = halfHeight * Screen.width / Screen.height;
+        halfWidth = halfHeight * (Screen.width / (Screen.height * 0.8f));
         
 
     }

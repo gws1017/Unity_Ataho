@@ -18,5 +18,6 @@ public class SaveObject : MonoBehaviour
     public void Recovery()
     {
         AudioManager.instance.PlaySFX("recovery");
+        PlayerStat.instance.Recovery();
     }
 }

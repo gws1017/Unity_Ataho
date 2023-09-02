@@ -50,3 +50,6 @@ TagManager:
   - name: BlockObject
     uniqueID: 2323638583
     locked: 0
+  - name: Camera
+    uniqueID: 2721994231
+    locked: 0
