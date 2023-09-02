@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class TalkManager : MonoBehaviour
 {
@@ -8,7 +9,17 @@ public class TalkManager : MonoBehaviour
     Dictionary<int, Sprite> portraitData;
 
     [SerializeField]
+    GameManager gameManager;
+    [SerializeField]
     Sprite[] portraitArr;
+    [SerializeField]
+    RectTransform selectImage;
+
+    [SerializeField]
+    int selectNumber = 0;
+    int selectLength;
+    bool keyInput;
+
     void Awake()
     {
         talkData = new Dictionary<int, string[]>();
@@ -16,10 +27,39 @@ public class TalkManager : MonoBehaviour
         GenerateData();
     }
 
-    // Update is called once per frame
+    private void Update()
+    {
+        if(keyInput)
+        {
+            if(Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                if (selectNumber < selectLength-1)
+                    selectNumber++;
+                else
+                    selectNumber = 0;
+                ChangeSelectImage();
+            }
+            else if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                if(selectNumber >= 0)
+                    selectNumber--;
+                else 
+                    selectNumber = selectLength-1;
+                ChangeSelectImage();
+            }
+            else if(Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space)) 
+            {
+                keyInput = false;
+
+                ExcuteChoise();
+            }
+
+        }
+    }
+    
     void GenerateData()
     {
-        talkData.Add(1000,new string[] { "그럼 쉬기로 할까:1000", "기록\n그만둔다:0" });
+        talkData.Add(110,new string[] { "그럼 쉬기로 할까:1000", "기록\n그만둔다:2" });
         talkData.Add(100,new string[] { "아무것도 들어있지 않다." });
 
         portraitData.Add(1000, portraitArr[0]);
@@ -34,6 +74,24 @@ public class TalkManager : MonoBehaviour
 
     }
 
+    void ChangeSelectImage()
+    {
+        Vector2 change_pos = new Vector2(-40, 20 + selectNumber * -40);
+        selectImage.anchoredPosition = change_pos;
+    }
+
+    void ExcuteChoise()
+    {
+        int id = gameManager.scanObject.GetComponent<ObjectData>().id;
+        if ( id == 110 && selectNumber == 0)
+        {
+            gameManager.scanObject.GetComponent<SaveObject>().GameSave();
+        }
+        selectImage.gameObject.SetActive(false);
+        selectNumber = 0;
+        ChangeSelectImage();
+    }
+
     public string GetTalk(int id, int talkIndex)
     {
         if (talkIndex == talkData[id].Length)
@@ -45,6 +103,13 @@ public class TalkManager : MonoBehaviour
     public Sprite GetPortrait(int id)
     {
         return portraitData[id];
+    }
+
+    public void SelectTalk(int Length)
+    {
+        keyInput = true;
+        selectImage.gameObject.SetActive(true);
+        selectLength = Length;
     }
 
 }

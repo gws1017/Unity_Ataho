@@ -6,18 +6,19 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
+    GameObject player;
+    [SerializeField]
     TalkManager talkManager;
     [SerializeField]
     Image portaitImage;
     [SerializeField]
     GameObject talkPannel;
     [SerializeField]
-    GameObject scanObject;
-    [SerializeField]
     Text talkText;
     [SerializeField]
     int talkIndex;
 
+    public GameObject scanObject;
     public bool isAction;
 
 
@@ -45,13 +46,20 @@ public class GameManager : MonoBehaviour
         {
             talkText.text = talkData.Split(':')[0];
             int portraitIndex = int.Parse(talkData.Split(':')[1]);
-            if(portraitIndex > 0)
+            if(portraitIndex >= 1000)
             {
                 portaitImage.sprite = talkManager.GetPortrait(portraitIndex);
                 portaitImage.color = new Color(1, 1, 1, 1);
             }
             else
+            {
+                if(portraitIndex <= 100)
+                {
+                    talkManager.SelectTalk(portraitIndex);
+                }
                 portaitImage.color = new Color(1, 1, 1, 0);
+
+            }
 
         }
         else
@@ -62,5 +70,14 @@ public class GameManager : MonoBehaviour
 
         isAction = true;
         talkIndex++;
+    }
+
+    
+    void GameLoad()
+    {
+        float x = PlayerPrefs.GetFloat("PlayerX");
+        float y = PlayerPrefs.GetFloat("PlayerY");
+
+        player.transform.position = new Vector3(x, y, 0);
     }
 }
