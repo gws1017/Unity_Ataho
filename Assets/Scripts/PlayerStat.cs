@@ -17,12 +17,9 @@ public class PlayerStat : MonoBehaviour
     public int mp = 30;
     public int currentMP;
 
-    [SerializeField]
-    int atk;
-    [SerializeField]
-    int def;
-    [SerializeField]
-    int speed;
+    public int atk;
+    public int def;
+    public int speed;
 
     public float CurrentHPPercentage
     {

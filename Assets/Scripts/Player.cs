@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameManager manager;
 
+    public string mapName = "village";
+
     float h;
     float v;
 

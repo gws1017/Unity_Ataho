@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -18,16 +19,23 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     int talkIndex;
 
-    string mapName = "village";
 
     public GameObject scanObject;
     public bool isAction;
 
     private void Start()
     {
-        AudioManager.instance.PlayBGM(mapName);
+        if (SceneManager.GetActiveScene().name == "GameScene")
+        {
+            AudioManager.instance.PlayBGM(player.GetComponent<Player>().mapName);
+            GameLoad();
+        }
+        else if (SceneManager.GetActiveScene().name == "TitleScene")
+        {
+            AudioManager.instance.PlayBGM("title");
+        }
     }
-
+   
     public void Action(GameObject scanObj)
     {
         scanObject = scanObj;
@@ -80,9 +88,33 @@ public class GameManager : MonoBehaviour
     
     void GameLoad()
     {
-        float x = PlayerPrefs.GetFloat("PlayerX");
-        float y = PlayerPrefs.GetFloat("PlayerY");
+        StartCoroutine(LoadWait());
+    }
 
-        player.transform.position = new Vector3(x, y, 0);
+    IEnumerator LoadWait()
+    {
+        yield return new WaitForSeconds(0.5f);
+        if(PlayerStat.instance == null) StartCoroutine(LoadWait());
+        else
+        {
+            float x = PlayerPrefs.GetFloat("PlayerX");
+            float y = PlayerPrefs.GetFloat("PlayerY");
+            PlayerStat.instance.currentHP = PlayerPrefs.GetInt("CurrentHP");
+            PlayerStat.instance.hp = PlayerPrefs.GetInt("MaxHP");
+            PlayerStat.instance.currentMP = PlayerPrefs.GetInt("CurrentMP");
+            PlayerStat.instance.mp = PlayerPrefs.GetInt("MaxMP");
+            PlayerStat.instance.currentExp = PlayerPrefs.GetInt("CurrentExp");
+
+            PlayerStat.instance.atk = PlayerPrefs.GetInt("Atk");
+            PlayerStat.instance.def = PlayerPrefs.GetInt("Def");
+            PlayerStat.instance.speed = PlayerPrefs.GetInt("Spd");
+
+            player.GetComponent<Player>().mapName = PlayerPrefs.GetString("MapName");
+
+            player.transform.position = new Vector3(x, y, 0);
+
+            Debug.Log("Load Data Success");
+
+        }
     }
 }
