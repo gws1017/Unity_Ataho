@@ -8,19 +8,14 @@ public class PlayerStat : MonoBehaviour
 
     [SerializeField]
     int player_lv;
-    [SerializeField]
-    int[] needExp;
-    [SerializeField]
-    int currentExp = 0;
 
-    [SerializeField]
-    int hp = 30;
-    [SerializeField]
-    int currentHP;
-    [SerializeField]
-    int mp = 30;
-    [SerializeField]
-    int currentMP;
+    public int needExp = 100;
+    public int currentExp = 0;
+
+    public int hp = 30;
+    public int currentHP;
+    public int mp = 30;
+    public int currentMP;
 
     [SerializeField]
     int atk;
@@ -29,6 +24,29 @@ public class PlayerStat : MonoBehaviour
     [SerializeField]
     int speed;
 
+    public float CurrentHPPercentage
+    {
+        get
+        {
+            return (float)currentHP / (float)hp;
+        }
+    }
+
+    public float CurrentMPPercentage
+    {
+        get
+        {
+            return (float)currentMP / (float)mp;
+        }
+    }
+
+    public float CurrentExpPercentage
+    {
+        get
+        {
+            return (float)currentExp / (float)needExp;
+        }
+    }
 
     void Start()
     {
@@ -63,5 +81,7 @@ public class PlayerStat : MonoBehaviour
         currentHP = hp;
         currentMP = mp;
     }
+
+   
 
 }
