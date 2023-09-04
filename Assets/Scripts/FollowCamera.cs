@@ -17,8 +17,8 @@ public class FollowCamera : MonoBehaviour
     Vector3 minBound;
     Vector3 maxBound;
 
-    float halfWidth;
     float halfHeight;
+    float halfWidth;
 
     Vector3 targetPos;
 
@@ -30,8 +30,10 @@ public class FollowCamera : MonoBehaviour
         maxBound = bound.bounds.max;
 
         halfHeight = followCam.orthographicSize;
-        halfWidth = halfHeight * (Screen.width / (Screen.height * 0.8f));
-        
+        halfWidth = halfHeight * (float)Screen.width / (float)(Screen.height*0.7);
+
+            Debug.Log(halfWidth);
+
 
     }
 
@@ -41,10 +43,16 @@ public class FollowCamera : MonoBehaviour
         {
             targetPos.Set(target.transform.position.x, target.transform.position.y, transform.position.z);
             transform.position = Vector3.Lerp(transform.position, targetPos, moveSpeed*Time.deltaTime);
-
             float clampedX = Mathf.Clamp(transform.position.x,minBound.x+ halfWidth, maxBound.x - halfWidth);
             float clampedY = Mathf.Clamp(transform.position.y,minBound.y+ halfHeight, maxBound.y - halfHeight);
             transform.position = new Vector3(clampedX, clampedY, transform.position.z);
         }
+    }
+
+    public void SetBound(BoxCollider2D newBound)
+    {
+        bound = newBound;
+        minBound = bound.bounds.min;
+        maxBound = bound.bounds.max;
     }
 }
