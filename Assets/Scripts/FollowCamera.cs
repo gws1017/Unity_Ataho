@@ -18,6 +18,9 @@ public class FollowCamera : MonoBehaviour
     Vector3 maxBound;
 
     float halfHeight;
+    [SerializeField]
+    float viewportOffset;
+    [SerializeField]
     float halfWidth;
 
     Vector3 targetPos;
@@ -30,11 +33,8 @@ public class FollowCamera : MonoBehaviour
         maxBound = bound.bounds.max;
 
         halfHeight = followCam.orthographicSize;
-        halfWidth = halfHeight * (float)Screen.width / (float)(Screen.height*0.7);
-
-            Debug.Log(halfWidth);
-
-
+        halfWidth = halfHeight * Screen.width / (Screen.height);
+        halfWidth += halfWidth * (followCam.rect.y + viewportOffset);
     }
 
     void Update()
